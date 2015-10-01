@@ -36,27 +36,32 @@ class TCPChat {
 		  	BufferedReader inFromGreen = new BufferedReader(new InputStreamReader(greenSocket.getInputStream()));
 			DataOutputStream  outToGreen = new DataOutputStream(greenSocket.getOutputStream());
 			outToGreen.writeBytes("100\n");
+			System.out.println("First user connected");
 
 			// wait for yellow to connect and assign input and output streams
 		  	Socket yellowSocket = welcomeSocket.accept();
 		  	BufferedReader inFromYellow = new BufferedReader(new InputStreamReader(yellowSocket.getInputStream()));
 			DataOutputStream  outToYellow = new DataOutputStream(yellowSocket.getOutputStream());
 			outToYellow.writeBytes("200\n");
+			System.out.println("Second user connected");
 
-			// chat untill one client says Goodbye
+			// chat until one client says Goodbye
 		  	while(true) 
 		  	{
 			   sentence = inFromGreen.readLine();
+			   System.out.println(sentence);
 			   if (sentence.equals("Goodbye")){break;}
 			   outToYellow.writeBytes(sentence + '\n');
 
 			   sentence = inFromYellow.readLine();
+			   System.out.println(sentence);
 			   if (sentence.equals("Goodbye")){break;}
 			   outToGreen.writeBytes(sentence + '\n');
 	        }
 
 	        outToYellow.writeBytes("300\n");
 	        outToGreen.writeBytes("300\n");
+			System.out.println("Users disconnected");
 	    }
     }
 }
